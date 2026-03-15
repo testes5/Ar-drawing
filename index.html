@@ -13,8 +13,8 @@
 
     body {
       height: 100vh;
-      background: #e0f7fa; /* azul bem claro, estilo app AR */
-      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(to bottom, #e1f5fe, #b3e5fc); /* gradiente azul clean e bonito */
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       color: #000;
       display: flex;
       flex-direction: column;
@@ -25,42 +25,46 @@
 
     header {
       width: 100%;
-      background: #ffffff;
-      border-bottom: 2px solid #ccc;
-      padding: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding: 14px;
       text-align: center;
-      font-size: 1.8rem;
-      font-weight: bold;
+      font-size: 1.9rem;
+      font-weight: 600;
       color: #000;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       position: fixed;
       top: 0;
       z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
 
-    .app-container {
+    .app-frame {
       width: 100%;
-      max-width: 420px; /* tamanho típico de tela mobile */
+      max-width: 400px;
       height: calc(100vh - 60px);
       margin-top: 60px;
-      background: #ffffff;
-      border: 12px solid #ffffff;
-      border-radius: 24px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      background: #fff;
+      border-radius: 28px;
       overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
       position: relative;
       display: flex;
       flex-direction: column;
     }
 
-    .paper-background {
+    .paper-bg {
       position: absolute;
       inset: 0;
-      background: #ffffff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path d="M0 0h40v40H0z" fill="%23f8f8f8"/><path d="M0 20h40M20 0v40" stroke="%23e0e0e0" stroke-width="1"/></svg>') repeat;
+      background: #ffffff;
+      background-image: 
+        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+      background-size: 20px 20px;
       z-index: 1;
     }
 
-    .overlay-layer {
+    .overlay {
       position: absolute;
       inset: 0;
       z-index: 2;
@@ -70,44 +74,47 @@
       pointer-events: none;
     }
 
-    #imported-image {
-      max-width: 90%;
-      max-height: 70%;
+    #imported-img {
+      max-width: 92%;
+      max-height: 75%;
       object-fit: contain;
-      opacity: 0.75; /* semi-transparente como AR overlay */
-      filter: grayscale(30%) contrast(1.1); /* efeito de "traçado" leve */
-      transition: opacity 0.4s;
+      opacity: 0.7;
+      transition: opacity 0.4s ease;
     }
 
-    .import-area {
+    .import-btn {
       position: relative;
       z-index: 5;
-      text-align: center;
-      margin: auto;
-      padding: 40px 20px;
-      background: rgba(255,255,255,0.85);
-      border: 4px dashed #000;
-      border-radius: 16px;
-      width: 80%;
+      width: 85%;
       max-width: 320px;
+      padding: 40px 24px;
+      background: #e3f2fd;
+      border: 3px dashed #fff;
+      border-radius: 24px;
+      text-align: center;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      margin: auto;
     }
 
-    .import-area:hover {
-      background: rgba(200,220,255,0.9);
-      transform: scale(1.03);
+    .import-btn:hover {
+      background: #bbdefb;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
     }
 
-    .import-area h2 {
-      font-size: 1.6rem;
+    .import-btn h1 {
+      font-size: 1.8rem;
       margin-bottom: 12px;
       color: #000;
+      font-weight: 700;
     }
 
-    .import-area p {
+    .import-btn p {
       font-size: 1.1rem;
       color: #333;
+      line-height: 1.4;
     }
 
     input[type="file"] {
@@ -116,21 +123,24 @@
 
     .controls {
       position: absolute;
-      bottom: 20px;
+      bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
-      background: rgba(0,0,0,0.6);
-      color: white;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-size: 0.9rem;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-size: 0.95rem;
       display: none;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(6px);
     }
 
-    #opacity-slider {
-      width: 180px;
-      margin: 0 10px;
+    #opacity {
+      width: 160px;
+      accent-color: #fff;
     }
   </style>
 </head>
@@ -138,52 +148,50 @@
 
   <header>Ar drawing Free!!</header>
 
-  <div class="app-container">
-    <div class="paper-background"></div>
+  <div class="app-frame">
+    <div class="paper-bg"></div>
 
-    <div class="overlay-layer">
-      <img id="imported-image" src="" alt="Imagem importada para traçar" />
+    <div class="overlay">
+      <img id="imported-img" src="" alt="Imagem para traçar" />
     </div>
 
-    <label for="imageInput" class="import-area" id="importZone">
-      <h2>Import Image here!</h2>
-      <p>Toque aqui para abrir a galeria e escolher uma foto para traçar no AR</p>
+    <label for="imgInput" class="import-btn" id="importArea">
+      <h1>Import Image here!</h1>
+      <p>Escolha uma foto da galeria para traçar no AR de forma simples e divertida</p>
     </label>
 
-    <input type="file" id="imageInput" accept="image/*">
+    <input type="file" id="imgInput" accept="image/*">
 
-    <div class="controls" id="controls">
-      Opacidade do traçado: 
-      <input type="range" id="opacity-slider" min="0.1" max="1" step="0.05" value="0.75">
+    <div class="controls" id="ctrlPanel">
+      Opacidade:
+      <input type="range" id="opacity" min="0.2" max="1" step="0.05" value="0.7">
     </div>
   </div>
 
   <script>
-    const imageInput = document.getElementById('imageInput');
-    const importedImage = document.getElementById('imported-image');
-    const importZone = document.getElementById('importZone');
-    const controls = document.getElementById('controls');
-    const opacitySlider = document.getElementById('opacity-slider');
+    const imgInput = document.getElementById('imgInput');
+    const importedImg = document.getElementById('imported-img');
+    const importArea = document.getElementById('importArea');
+    const ctrlPanel = document.getElementById('ctrlPanel');
+    const opacityCtrl = document.getElementById('opacity');
 
-    importZone.addEventListener('click', () => {
-      imageInput.click();
-    });
+    importArea.addEventListener('click', () => imgInput.click());
 
-    imageInput.addEventListener('change', (e) => {
+    imgInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = (ev) => {
-          importedImage.src = ev.target.result;
-          importZone.style.display = 'none'; // esconde o botão depois de importar
-          controls.style.display = 'flex';    // mostra controles
+          importedImg.src = ev.target.result;
+          importArea.style.display = 'none';
+          ctrlPanel.style.display = 'flex';
         };
         reader.readAsDataURL(file);
       }
     });
 
-    opacitySlider.addEventListener('input', (e) => {
-      importedImage.style.opacity = e.target.value;
+    opacityCtrl.addEventListener('input', (e) => {
+      importedImg.style.opacity = e.target.value;
     });
   </script>
 
