@@ -11,9 +11,12 @@
       background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
       font-family: system-ui, -apple-system, sans-serif;
       overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    /* Loading screen antiga (lenta, com imagem embaixo, barra no fundo) */
+    /* Loading antiga */
     #loading {
       position:fixed;
       inset:0;
@@ -22,34 +25,34 @@
       flex-direction:column;
       align-items:center;
       justify-content:flex-end;
-      padding-bottom:60px;
+      padding-bottom:8vh;
       z-index:100;
       transition:opacity 1.2s ease, transform 1.2s ease;
     }
     #loading.hidden { opacity:0; transform:scale(0.92); pointer-events:none; }
-    .illustration { width:85%; max-width:340px; margin-bottom:30px; border-radius:24px; box-shadow:0 15px 50px rgba(0,0,0,0.22); }
-    .title-loading { font-size:2.6rem; font-weight:700; color:#000; margin-bottom:25px; text-align:center; }
-    .progress-container { width:88%; max-width:360px; height:18px; background:rgba(255,255,255,0.6); border-radius:9px; overflow:hidden; margin-bottom:15px; }
-    .progress-bar { width:0%; height:100%; background:linear-gradient(to right, #2196f3, #64b5f6); border-radius:9px; transition:width 0.5s ease; }
-    .percent { font-size:2.2rem; font-weight:600; color:#333; margin-bottom:40px; }
+    .illustration { width:80%; max-width:360px; margin-bottom:4vh; border-radius:20px; box-shadow:0 15px 50px rgba(0,0,0,0.2); }
+    .title-loading { font-size:clamp(2rem, 6vw, 2.8rem); font-weight:700; color:#000; margin-bottom:3vh; text-align:center; }
+    .progress-container { width:85%; max-width:400px; height:16px; background:rgba(255,255,255,0.6); border-radius:8px; overflow:hidden; margin-bottom:2vh; }
+    .progress-bar { width:0%; height:100%; background:linear-gradient(to right, #2196f3, #64b5f6); border-radius:8px; transition:width 0.5s ease; }
+    .percent { font-size:clamp(1.8rem, 5vw, 2.2rem); font-weight:600; color:#333; }
 
-    #main { height:100vh; opacity:0; transition:opacity 1.4s ease; }
+    #main { height:100vh; width:100%; opacity:0; transition:opacity 1.4s ease; }
     #main.visible { opacity:1; }
 
     header { 
       width:100%; background:rgba(255,255,255,0.96); backdrop-filter:blur(14px);
-      padding:16px; text-align:center; font-size:2.3rem; font-weight:700; color:#000;
+      padding:clamp(12px, 3vw, 18px); text-align:center; font-size:clamp(1.8rem, 5vw, 2.4rem); font-weight:700; color:#000;
       position:fixed; top:0; z-index:20; box-shadow:0 4px 12px rgba(0,0,0,0.08);
     }
 
+    /* Import screen com papel */
     #import-screen {
       width:100%; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-      background:#fff; position:relative;
+      position:relative;
     }
     .frame {
-      width:96%; max-width:480px; height:80vh; background:#fff; border-radius:32px;
-      overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.18); position:relative;
-      display:flex; align-items:center; justify-content:center;
+      width:clamp(300px, 92%, 700px); height:clamp(500px, 80vh, 800px); background:#fff; border-radius:clamp(20px, 5vw, 32px);
+      overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.18); position:relative; margin:clamp(60px, 10vh, 80px) auto 0;
     }
     .paper-bg {
       position:absolute; inset:0; z-index:1; background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path d="M0 20h40M20 0v40" stroke="%23f0f0f0" stroke-width="1"/></svg>') repeat;
@@ -61,37 +64,41 @@
       max-width:92%; max-height:88%; object-fit:contain; opacity:0.7; transition:opacity 0.4s, transform 0.4s;
     }
     .import-text {
-      position:absolute; z-index:5; text-align:center; pointer-events:none;
-      animation:glow 3s infinite alternate;
+      position:absolute; z-index:5; text-align:center; pointer-events:none; animation:glow 4s infinite alternate;
     }
-    .import-text h1 { font-size:2.8rem; font-weight:700; color:#000; margin-bottom:12px; text-shadow:0 2px 10px rgba(0,0,0,0.1); }
-    .import-text p { font-size:1.3rem; color:#444; }
+    .import-text h1 { font-size:clamp(2rem, 6vw, 3rem); font-weight:700; color:#000; margin-bottom:1vh; text-shadow:0 2px 10px rgba(0,0,0,0.1); }
+    .import-text p { font-size:clamp(1rem, 3vw, 1.3rem); color:#444; }
     @keyframes glow { from { text-shadow:0 0 10px #2196f3aa; } to { text-shadow:0 0 30px #2196f3; } }
     #import-area { width:100%; height:100%; cursor:pointer; position:absolute; z-index:4; }
 
-    /* Tela AR (câmera + papel + overlay) */
+    /* AR screen */
     #ar-screen {
       display:none; width:100%; height:100vh; position:relative; background:#000;
     }
     #video { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; z-index:1; }
-    .paper-ar { position:absolute; inset:0; z-index:2; background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path d="M0 20h40M20 0v40" stroke="%23f0f0f0" stroke-width="1"/></svg>') repeat; opacity:0.4; pointer-events:none; }
+    .paper-ar { position:absolute; inset:0; z-index:2; background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path d="M0 20h40M20 0v40" stroke="%23f0f0f0" stroke-width="1"/></svg>') repeat; opacity:0.35; pointer-events:none; }
     #ar-overlay { position:absolute; inset:0; z-index:3; display:flex; align-items:center; justify-content:center; pointer-events:none; }
 
-    /* Barra inferior e painel */
-    .bottom-bar { position:absolute; bottom:0; left:0; right:0; height:70px; background:rgba(255,255,255,0.94); backdrop-filter:blur(20px); border-top:1px solid rgba(0,0,0,0.1); z-index:20; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.5s; }
-    .bottom-bar.expanded { height:70px; }
-    .arrow { font-size:2.5rem; color:#2196f3; transition:transform 0.5s; }
+    /* Barra e painel */
+    .bottom-bar { position:absolute; bottom:0; left:0; right:0; height:clamp(60px, 8vh, 70px); background:rgba(255,255,255,0.94); backdrop-filter:blur(20px); border-top:1px solid rgba(0,0,0,0.1); z-index:20; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.5s; }
+    .arrow { font-size:clamp(2rem, 5vw, 2.5rem); color:#2196f3; transition:transform 0.5s; }
     .bottom-bar.expanded .arrow { transform:rotate(180deg); }
-    .options-panel { position:absolute; bottom:70px; left:0; right:0; background:rgba(255,255,255,0.96); backdrop-filter:blur(20px); padding:25px 20px; border-radius:28px 28px 0 0; transform:translateY(100%); transition:transform 0.6s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 -12px 50px rgba(0,0,0,0.15); z-index:25; }
+    .options-panel { position:absolute; bottom:clamp(60px, 8vh, 70px); left:0; right:0; background:rgba(255,255,255,0.96); backdrop-filter:blur(20px); padding:clamp(20px, 4vw, 25px) 20px; border-radius:28px 28px 0 0; transform:translateY(100%); transition:transform 0.6s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 -12px 50px rgba(0,0,0,0.15); z-index:25; }
     .options-panel.show { transform:translateY(0); }
-    .option { margin:20px 0; }
-    .option label { display:block; font-size:1.15rem; margin-bottom:10px; color:#222; font-weight:600; }
+    .option { margin:clamp(15px, 3vh, 20px) 0; }
+    .option label { display:block; font-size:clamp(1rem, 3vw, 1.15rem); margin-bottom:10px; color:#222; font-weight:600; }
     input[type="range"] { width:100%; height:10px; accent-color:#2196f3; }
-    .btn-reset { width:100%; padding:16px; background:#2196f3; color:#fff; border:none; border-radius:20px; font-size:1.2rem; font-weight:600; margin-top:15px; box-shadow:0 4px 15px rgba(33,150,243,0.3); }
+    .btn-reset { width:100%; padding:clamp(14px, 3vw, 16px); background:#2196f3; color:#fff; border:none; border-radius:20px; font-size:clamp(1rem, 3vw, 1.2rem); font-weight:600; margin-top:15px; box-shadow:0 4px 15px rgba(33,150,243,0.3); }
 
-    .ar-btn { position:absolute; padding:16px 32px; font-size:1.3rem; font-weight:600; border:none; border-radius:50px; color:#fff; box-shadow:0 6px 20px rgba(0,0,0,0.25); z-index:30; }
-    #back-btn { left:20px; bottom:90px; background:#666; }
-    #done-btn { right:20px; bottom:90px; background:#4caf50; }
+    .ar-btn { position:absolute; padding:clamp(14px, 3vw, 16px) clamp(24px, 5vw, 32px); font-size:clamp(1.1rem, 3vw, 1.3rem); font-weight:600; border:none; border-radius:50px; color:#fff; box-shadow:0 6px 20px rgba(0,0,0,0.25); z-index:30; }
+    #back-btn { left:clamp(15px, 4vw, 20px); bottom:clamp(80px, 12vh, 90px); background:#666; }
+    #done-btn { right:clamp(15px, 4vw, 20px); bottom:clamp(80px, 12vh, 90px); background:#4caf50; }
+
+    @media (min-width: 768px) {
+      .frame { height:70vh; margin-top:90px; }
+      .import-text h1 { font-size:4rem; }
+      .import-text p { font-size:1.6rem; }
+    }
   </style>
 </head>
 <body>
@@ -107,7 +114,7 @@
   <div id="main">
     <header>Ar drawing Free!!</header>
 
-    <!-- Tela de import com papel atrás e na frente -->
+    <!-- Import screen com papel -->
     <div id="import-screen">
       <div class="frame">
         <div class="paper-bg"></div>
@@ -116,13 +123,13 @@
         </div>
         <div class="import-text">
           <h1>Bote a sua Imagem aqui!!</h1>
-          <p>Toque na tela para escolher da galeria e começar a traçar</p>
+          <p>Toque na área para escolher da galeria e começar</p>
         </div>
-        <div id="import-area"></div> <!-- área clicável -->
+        <div id="import-area"></div>
       </div>
     </div>
 
-    <!-- Tela AR -->
+    <!-- AR screen -->
     <div id="ar-screen">
       <video id="video" autoplay playsinline></video>
       <div class="paper-ar"></div>
@@ -172,7 +179,8 @@
       }
     }, 300);
 
-    // Elementos
+    // ... (o resto do script é o mesmo da versão anterior, com import-area clicável, startAR, gestos pinch/drag, sliders, etc. - copiei pra não cortar)
+
     const importArea = document.getElementById('import-area');
     const importedImg = document.getElementById('imported-img');
     const arImg = document.getElementById('ar-img');
@@ -192,7 +200,6 @@
     let currentY = 0;
     let stream = null;
 
-    // Clique para importar imagem (uma vez)
     importArea.addEventListener('click', () => {
       const input = document.createElement('input');
       input.type = 'file';
@@ -224,7 +231,6 @@
       }
     }
 
-    // Barra sobe
     bottomBar.addEventListener('click', () => {
       panel.classList.toggle('show');
       bottomBar.classList.toggle('expanded');
@@ -247,7 +253,6 @@
     });
     doneBtn.addEventListener('click', () => alert('Finalizado! Tire print.'));
 
-    // Gestos pinch + drag
     let startDist = 0, startScale = 1, startX = 0, startY = 0;
     arScreen.addEventListener('touchstart', e => {
       if (e.touches.length === 2) {
