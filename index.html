@@ -5,193 +5,278 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Ar drawing Free!!</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      height:100vh;
+      background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+      font-family: system-ui, -apple-system, sans-serif;
+      overflow:hidden;
     }
 
-    body {
-      height: 100vh;
-      background: linear-gradient(to bottom, #e1f5fe, #b3e5fc); /* gradiente azul clean e bonito */
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+    /* Loading Screen */
+    #loading {
+      position:fixed;
+      inset:0;
+      background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      z-index:100;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    #loading.hidden {
+      opacity:0;
+      transform:scale(0.95);
+      pointer-events:none;
+    }
+
+    .title-loading {
+      font-size:2.5rem;
+      font-weight:700;
+      color:#000;
+      margin-bottom:40px;
+      text-shadow:0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .progress-container {
+      width:80%;
+      max-width:320px;
+      height:12px;
+      background:rgba(255,255,255,0.4);
+      border-radius:6px;
+      overflow:hidden;
+      box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+      width:0%;
+      height:100%;
+      background:linear-gradient(to right, #2196f3, #64b5f6);
+      border-radius:6px;
+      transition:width 0.3s ease;
+      box-shadow:0 0 15px #2196f3aa;
+    }
+
+    .percent {
+      margin-top:20px;
+      font-size:1.8rem;
+      font-weight:600;
+      color:#333;
+    }
+
+    /* Main Content (escondido no início) */
+    #main {
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      transition:opacity 1s ease 0.4s;
+    }
+
+    #main.visible {
+      opacity:1;
     }
 
     header {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-      padding: 14px;
-      text-align: center;
-      font-size: 1.9rem;
-      font-weight: 600;
-      color: #000;
-      position: fixed;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      width:100%;
+      background:rgba(255,255,255,0.95);
+      backdrop-filter:blur(12px);
+      padding:16px;
+      text-align:center;
+      font-size:2rem;
+      font-weight:700;
+      color:#000;
+      position:fixed;
+      top:0;
+      z-index:20;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
     }
 
-    .app-frame {
-      width: 100%;
-      max-width: 400px;
-      height: calc(100vh - 60px);
-      margin-top: 60px;
-      background: #fff;
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-      position: relative;
-      display: flex;
-      flex-direction: column;
+    .frame {
+      width:100%;
+      max-width:380px;
+      height:calc(100vh - 70px);
+      margin-top:70px;
+      background:#fff;
+      border-radius:32px;
+      overflow:hidden;
+      box-shadow:0 25px 70px rgba(0,0,0,0.18);
+      position:relative;
+      display:flex;
+      flex-direction:column;
     }
 
-    .paper-bg {
-      position: absolute;
-      inset: 0;
-      background: #ffffff;
+    .paper {
+      position:absolute;
+      inset:0;
+      background:#fff;
       background-image: 
-        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
-      background-size: 20px 20px;
-      z-index: 1;
+        linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px);
+      background-size:24px 24px;
+      z-index:1;
     }
 
     .overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
+      position:absolute;
+      inset:0;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
     }
 
-    #imported-img {
-      max-width: 92%;
-      max-height: 75%;
-      object-fit: contain;
-      opacity: 0.7;
-      transition: opacity 0.4s ease;
+    #img {
+      max-width:94%;
+      max-height:78%;
+      object-fit:contain;
+      opacity:0.72;
+      transition:opacity 0.5s ease;
     }
 
-    .import-btn {
-      position: relative;
-      z-index: 5;
-      width: 85%;
-      max-width: 320px;
-      padding: 40px 24px;
-      background: #e3f2fd;
-      border: 3px dashed #fff;
-      border-radius: 24px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-      margin: auto;
+    .import-zone {
+      position:relative;
+      z-index:10;
+      width:82%;
+      padding:50px 30px;
+      background:#e8f4fd;
+      border:4px dashed #fff;
+      border-radius:28px;
+      text-align:center;
+      cursor:pointer;
+      transition:all 0.35s ease;
+      box-shadow:0 10px 35px rgba(0,0,0,0.12);
+      margin:auto;
     }
 
-    .import-btn:hover {
-      background: #bbdefb;
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    .import-zone:hover {
+      background:#d1e8ff;
+      transform:translateY(-6px);
+      box-shadow:0 16px 50px rgba(0,0,0,0.18);
     }
 
-    .import-btn h1 {
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-      color: #000;
-      font-weight: 700;
+    .import-zone h1 {
+      font-size:2rem;
+      margin-bottom:16px;
+      color:#000;
     }
 
-    .import-btn p {
-      font-size: 1.1rem;
-      color: #333;
-      line-height: 1.4;
+    .import-zone p {
+      font-size:1.15rem;
+      color:#444;
+      line-height:1.5;
     }
 
-    input[type="file"] {
-      display: none;
-    }
+    input[type="file"] { display:none; }
 
     .controls {
-      position: absolute;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      background: rgba(0,0,0,0.55);
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 50px;
-      font-size: 0.95rem;
-      display: none;
-      align-items: center;
-      gap: 12px;
-      backdrop-filter: blur(6px);
+      position:absolute;
+      bottom:32px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,0.6);
+      color:#fff;
+      padding:12px 24px;
+      border-radius:999px;
+      font-size:1rem;
+      display:none;
+      align-items:center;
+      gap:16px;
+      backdrop-filter:blur(8px);
     }
 
-    #opacity {
-      width: 160px;
-      accent-color: #fff;
-    }
+    #opacidade { width:180px; accent-color:#fff; }
   </style>
 </head>
 <body>
 
-  <header>Ar drawing Free!!</header>
-
-  <div class="app-frame">
-    <div class="paper-bg"></div>
-
-    <div class="overlay">
-      <img id="imported-img" src="" alt="Imagem para traçar" />
+  <!-- Loading Screen -->
+  <div id="loading">
+    <div class="title-loading">Ar drawing Free!!</div>
+    <div class="progress-container">
+      <div class="progress-bar" id="bar"></div>
     </div>
+    <div class="percent" id="percent">0%</div>
+  </div>
 
-    <label for="imgInput" class="import-btn" id="importArea">
-      <h1>Import Image here!</h1>
-      <p>Escolha uma foto da galeria para traçar no AR de forma simples e divertida</p>
-    </label>
+  <!-- Main App -->
+  <div id="main">
+    <header>Ar drawing Free!!</header>
 
-    <input type="file" id="imgInput" accept="image/*">
+    <div class="frame">
+      <div class="paper"></div>
+      <div class="overlay">
+        <img id="img" src="" alt="Imagem para traçar" />
+      </div>
 
-    <div class="controls" id="ctrlPanel">
-      Opacidade:
-      <input type="range" id="opacity" min="0.2" max="1" step="0.05" value="0.7">
+      <label for="file" class="import-zone" id="zone">
+        <h1>Import Image here!</h1>
+        <p>Toque para escolher uma foto da galeria e traçar no AR</p>
+      </label>
+
+      <input type="file" id="file" accept="image/*">
+
+      <div class="controls" id="ctrls">
+        Opacidade:
+        <input type="range" id="opacidade" min="0.2" max="1" step="0.05" value="0.72">
+      </div>
     </div>
   </div>
 
   <script>
-    const imgInput = document.getElementById('imgInput');
-    const importedImg = document.getElementById('imported-img');
-    const importArea = document.getElementById('importArea');
-    const ctrlPanel = document.getElementById('ctrlPanel');
-    const opacityCtrl = document.getElementById('opacity');
+    // Simula carregamento inicial
+    const loading = document.getElementById('loading');
+    const bar = document.getElementById('bar');
+    const percent = document.getElementById('percent');
+    const main = document.getElementById('main');
 
-    importArea.addEventListener('click', () => imgInput.click());
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 12 + 8; // aumenta de forma variada, mas chega a 100
+      if (progress > 100) progress = 100;
+      bar.style.width = progress + '%';
+      percent.textContent = Math.round(progress) + '%';
 
-    imgInput.addEventListener('change', (e) => {
+      if (progress >= 100) {
+        clearInterval(interval);
+        setTimeout(() => {
+          loading.classList.add('hidden');
+          setTimeout(() => {
+            main.classList.add('visible');
+          }, 800); // tempo da animação fade + scale
+        }, 600); // pausa no 100% pra ver
+      }
+    }, 180); // ~4-5 segundos total
+
+    // Parte de importar imagem (igual antes)
+    const fileInput = document.getElementById('file');
+    const imgEl = document.getElementById('img');
+    const zone = document.getElementById('zone');
+    const ctrls = document.getElementById('ctrls');
+    const opacidade = document.getElementById('opacidade');
+
+    zone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = (ev) => {
-          importedImg.src = ev.target.result;
-          importArea.style.display = 'none';
-          ctrlPanel.style.display = 'flex';
+          imgEl.src = ev.target.result;
+          zone.style.display = 'none';
+          ctrls.style.display = 'flex';
         };
         reader.readAsDataURL(file);
       }
     });
 
-    opacityCtrl.addEventListener('input', (e) => {
-      importedImg.style.opacity = e.target.value;
+    opacidade.addEventListener('input', (e) => {
+      imgEl.style.opacity = e.target.value;
     });
   </script>
 
