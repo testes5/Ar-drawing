@@ -8,83 +8,86 @@
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       height:100vh;
-      background: linear-gradient(135deg, #a1e3ff, #6ec6ff);
+      background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
       font-family: system-ui, -apple-system, sans-serif;
       overflow:hidden;
     }
 
-    /* Loading bonito com animação */
+    /* Loading com foto da pessoa desenhando */
     #loading {
-      position:fixed; inset:0; background: linear-gradient(135deg, #a1e3ff, #6ec6ff);
-      display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
-      padding-bottom:60px; z-index:100; transition: all 1.2s cubic-bezier(0.4,0,0.2,1);
+      position:fixed; inset:0; background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      z-index:100; transition: all 1.2s cubic-bezier(0.4,0,0.2,1);
     }
-    #loading.hidden { opacity:0; transform:scale(0.88); }
-    .illustration { width:88%; max-width:340px; margin-bottom:30px; border-radius:28px; box-shadow:0 20px 60px rgba(0,0,0,0.25); animation: float 3s ease-in-out infinite; }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-    .title-loading { font-size:2.6rem; font-weight:700; color:#000; margin-bottom:25px; text-shadow:0 4px 15px rgba(0,0,0,0.1); }
-    .progress-container { width:88%; max-width:360px; height:18px; background:rgba(255,255,255,0.65); border-radius:12px; overflow:hidden; box-shadow:0 8px 25px rgba(0,0,0,0.15); }
-    .progress-bar { width:0%; height:100%; background:linear-gradient(to right,#2196f3,#64b5f6); border-radius:12px; transition:width 0.4s ease; box-shadow:0 0 25px #2196f3; }
-    .percent { font-size:2.2rem; font-weight:700; color:#222; margin-top:18px; }
+    #loading.hidden { opacity:0; transform:scale(0.9); }
+    .illustration { width:80%; max-width:320px; border-radius:24px; box-shadow:0 15px 50px rgba(0,0,0,0.2); animation:float 4s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .title-loading { font-size:2.8rem; font-weight:800; color:#000; margin:20px 0; text-shadow:0 2px 10px rgba(0,0,0,0.1); }
 
-    #main { height:100vh; opacity:0; transition:opacity 1.4s ease; }
+    #main { height:100vh; opacity:0; transition:opacity 1.5s ease; position:relative; }
     #main.visible { opacity:1; }
 
     header { 
       width:100%; background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
-      padding:18px; text-align:center; font-size:2.3rem; font-weight:700; color:#000;
-      position:fixed; top:0; z-index:30; box-shadow:0 6px 20px rgba(0,0,0,0.1);
+      padding:16px; text-align:center; font-size:2.4rem; font-weight:700; color:#000;
+      position:fixed; top:0; z-index:30; box-shadow:0 4px 15px rgba(0,0,0,0.08);
     }
 
-    /* Tela AR */
+    /* Tela AR com papel atrás e na frente */
     #ar-screen {
-      display:none; width:100%; height:100vh; position:relative; background:#000; overflow:hidden;
+      display:none; width:100%; height:100vh; position:relative; background:#000;
     }
     #video { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; z-index:1; }
-    #ar-overlay { position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+    .paper-bg { 
+      position:absolute; inset:0; z-index:2; background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%23fff"/><path d="M0 20h40M20 0v40" stroke="%23f0f0f0" stroke-width="1"/></svg>') repeat;
+      opacity:0.95; pointer-events:none;
+    }
+    #ar-overlay { position:absolute; inset:0; z-index:3; display:flex; align-items:center; justify-content:center; pointer-events:none; }
     #ar-img { 
-      max-width:92%; max-height:92%; object-fit:contain; opacity:0.68; 
-      transition:transform 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+      max-width:90%; max-height:85%; object-fit:contain; opacity:0.7; 
+      transition:transform 0.3s ease, opacity 0.4s ease; touch-action:manipulation;
     }
+    .import-text { 
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:4;
+      text-align:center; color:#000; pointer-events:none; animation:glow 3s infinite alternate;
+    }
+    .import-text h1 { font-size:2.8rem; font-weight:700; margin-bottom:10px; text-shadow:0 2px 8px rgba(0,0,0,0.1); }
+    .import-text p { font-size:1.3rem; color:#333; }
+    @keyframes glow { from { text-shadow:0 0 10px #2196f3; } to { text-shadow:0 0 30px #2196f3aa; } }
 
-    /* Barra inferior com seta */
+    /* Barra com seta */
     .bottom-bar {
-      position:absolute; bottom:0; left:0; right:0; height:68px; background:rgba(255,255,255,0.92);
-      backdrop-filter:blur(20px); border-top:1px solid rgba(0,0,0,0.1); z-index:20;
+      position:absolute; bottom:0; left:0; right:0; height:70px; background:rgba(255,255,255,0.94);
+      backdrop-filter:blur(25px); border-top:1px solid rgba(0,0,0,0.08); z-index:20;
       display:flex; align-items:center; justify-content:center; cursor:pointer;
-      transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+      transition:all 0.5s ease; box-shadow:0 -4px 15px rgba(0,0,0,0.1);
     }
-    .bottom-bar:hover { background:rgba(255,255,255,0.98); }
-    .arrow { font-size:2.2rem; color:#2196f3; transition:transform 0.4s; }
+    .bottom-bar.expanded { height:70px; }
+    .arrow { font-size:2.5rem; color:#2196f3; transition:transform 0.5s; }
     .bottom-bar.expanded .arrow { transform:rotate(180deg); }
 
     /* Painel que sobe */
     .options-panel {
-      position:absolute; bottom:68px; left:0; right:0; background:rgba(255,255,255,0.95);
-      backdrop-filter:blur(20px); padding:20px; border-radius:24px 24px 0 0;
-      transform:translateY(100%); transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
-      box-shadow:0 -10px 40px rgba(0,0,0,0.2); z-index:25;
+      position:absolute; bottom:70px; left:0; right:0; background:rgba(255,255,255,0.96);
+      backdrop-filter:blur(25px); padding:25px 20px; border-radius:28px 28px 0 0;
+      transform:translateY(100%); transition:transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow:0 -12px 50px rgba(0,0,0,0.15); z-index:25;
     }
     .options-panel.show { transform:translateY(0); }
-
-    .option { margin-bottom:18px; }
-    .option label { display:block; font-size:1.1rem; margin-bottom:8px; color:#333; font-weight:600; }
-    input[type="range"] { width:100%; accent-color:#2196f3; }
-
-    .btn-reset { width:100%; padding:14px; background:#2196f3; color:#fff; border:none; border-radius:16px; font-size:1.1rem; font-weight:600; margin-top:10px; }
+    .option { margin:20px 0; }
+    .option label { display:block; font-size:1.15rem; margin-bottom:10px; color:#222; font-weight:600; }
+    input[type="range"] { width:100%; height:10px; accent-color:#2196f3; }
+    .btn-reset { width:100%; padding:16px; background:#2196f3; color:#fff; border:none; border-radius:20px; font-size:1.2rem; font-weight:600; margin-top:15px; box-shadow:0 4px 15px rgba(33,150,243,0.3); }
 
     /* Botões fixos */
-    .ar-btn { 
-      position:absolute; padding:14px 28px; font-size:1.25rem; font-weight:600; border:none; border-radius:50px;
-      color:#fff; box-shadow:0 6px 20px rgba(0,0,0,0.3); z-index:30;
-    }
-    #back-btn { left:20px; bottom:80px; background:#555; }
-    #done-btn { right:20px; bottom:80px; background:#4caf50; }
+    .ar-btn { position:absolute; padding:16px 32px; font-size:1.3rem; font-weight:600; border:none; border-radius:50px; color:#fff; box-shadow:0 6px 20px rgba(0,0,0,0.25); z-index:30; }
+    #back-btn { left:20px; bottom:90px; background:#666; }
+    #done-btn { right:20px; bottom:90px; background:#4caf50; }
   </style>
 </head>
 <body>
 
-  <!-- Loading com foto da pessoa desenhando -->
+  <!-- Loading -->
   <div id="loading">
     <img src="https://picsum.photos/id/1015/800/600" alt="Mão desenhando com AR" class="illustration">
     <div class="title-loading">Ar drawing Free!!</div>
@@ -95,29 +98,31 @@
   <div id="main">
     <header>Ar drawing Free!!</header>
 
-    <!-- Tela AR -->
     <div id="ar-screen">
       <video id="video" autoplay playsinline></video>
+      <div class="paper-bg"></div>
       <div id="ar-overlay">
-        <img id="ar-img" src="" alt="Overlay AR" />
+        <img id="ar-img" src="" alt="Sua imagem" />
+      </div>
+      <div class="import-text" id="importText">
+        <h1>Bote a sua Imagem aqui!!</h1>
+        <p>Toque na tela para escolher da galeria</p>
       </div>
 
-      <!-- Barra com seta -->
       <div class="bottom-bar" id="bottomBar">
         <span class="arrow">↓</span>
       </div>
 
-      <!-- Painel que sobe -->
       <div class="options-panel" id="panel">
         <div class="option">
-          <label>Opacidade</label>
-          <input type="range" id="opacitySlider" min="0.1" max="1" step="0.01" value="0.68">
+          <label>Opacidade da imagem</label>
+          <input type="range" id="opacity" min="0.1" max="1" step="0.01" value="0.7">
         </div>
         <div class="option">
-          <label>Escala</label>
-          <input type="range" id="scaleSlider" min="0.3" max="4" step="0.01" value="1">
+          <label>Escala (tamanho)</label>
+          <input type="range" id="scale" min="0.3" max="3" step="0.01" value="1">
         </div>
-        <button class="btn-reset" id="resetBtn">Resetar posição e tamanho</button>
+        <button class="btn-reset" id="reset">Resetar tudo</button>
       </div>
 
       <button id="back-btn" class="ar-btn">Voltar</button>
@@ -126,14 +131,14 @@
   </div>
 
   <script>
-    // Loading suave e lenta
+    // Loading
     const loading = document.getElementById('loading');
     const bar = document.getElementById('bar');
     const percent = document.getElementById('percent');
     const main = document.getElementById('main');
     let progress = 0;
     const interval = setInterval(() => {
-      progress += Math.random() * 5 + 3;
+      progress += Math.random() * 6 + 4;
       if (progress > 100) progress = 100;
       bar.style.width = progress + '%';
       percent.textContent = Math.round(progress) + '%';
@@ -141,93 +146,83 @@
         clearInterval(interval);
         setTimeout(() => {
           loading.classList.add('hidden');
-          setTimeout(() => main.classList.add('visible'), 1200);
+          setTimeout(() => main.classList.add('visible'), 1400);
         }, 800);
       }
-    }, 280);
+    }, 250);
 
     // Elementos
     const arScreen = document.getElementById('ar-screen');
     const video = document.getElementById('video');
     const arImg = document.getElementById('ar-img');
+    const importText = document.getElementById('importText');
     const bottomBar = document.getElementById('bottomBar');
     const panel = document.getElementById('panel');
-    const opacitySlider = document.getElementById('opacitySlider');
-    const scaleSlider = document.getElementById('scaleSlider');
-    const resetBtn = document.getElementById('resetBtn');
+    const opacity = document.getElementById('opacity');
+    const scale = document.getElementById('scale');
+    const reset = document.getElementById('reset');
     const backBtn = document.getElementById('back-btn');
     const doneBtn = document.getElementById('done-btn');
 
     let currentScale = 1;
     let currentX = 0;
     let currentY = 0;
-    let isLocked = false;
     let stream = null;
-    let startDist = 0;
-    let startScale = 1;
-    let startX = 0;
-    let startY = 0;
 
-    // Selecionar foto UMA ÚNICA VEZ e ir direto pra AR
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          arImg.src = ev.target.result;
-          startAR();
-        };
-        reader.readAsDataURL(file);
-      }
-    };
+    // Clique na tela para importar foto (uma vez só)
+    arScreen.addEventListener('click', () => {
+      if (arImg.src) return; // evita múltiplos cliques
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = e => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = ev => {
+            arImg.src = ev.target.result;
+            importText.style.display = 'none';
+            startCamera();
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+    });
 
-    // Abre galeria automaticamente ao carregar o site (uma única vez)
-    setTimeout(() => fileInput.click(), 1800);
-
-    async function startAR() {
+    async function startCamera() {
       try {
         stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
         video.srcObject = stream;
-        arScreen.style.display = 'block';
       } catch (err) {
-        alert('Permissão da câmera necessária para o modo AR.');
+        alert('Permissão da câmera necessária para ver o papel real!');
       }
     }
 
-    // Barra com seta → sobe painel
+    // Barra sobe
     bottomBar.addEventListener('click', () => {
       panel.classList.toggle('show');
       bottomBar.classList.toggle('expanded');
     });
 
-    // Sliders
-    opacitySlider.addEventListener('input', (e) => arImg.style.opacity = e.target.value);
-    scaleSlider.addEventListener('input', (e) => {
+    // Controles
+    opacity.addEventListener('input', e => arImg.style.opacity = e.target.value);
+    scale.addEventListener('input', e => {
       currentScale = parseFloat(e.target.value);
-      updateTransform();
+      update();
+    });
+    reset.addEventListener('click', () => {
+      currentScale = 1; currentX = 0; currentY = 0;
+      scale.value = 1;
+      update();
     });
 
-    resetBtn.addEventListener('click', () => {
-      currentScale = 1;
-      currentX = 0;
-      currentY = 0;
-      scaleSlider.value = 1;
-      updateTransform();
-    });
+    backBtn.addEventListener('click', () => location.reload());
+    doneBtn.addEventListener('click', () => alert('Desenho pronto! Tire print.'));
 
-    // Voltar e Finalizado
-    backBtn.addEventListener('click', () => {
-      if (stream) stream.getTracks().forEach(t => t.stop());
-      location.reload(); // volta tudo limpo
-    });
-    doneBtn.addEventListener('click', () => alert('✅ Desenho finalizado! Tire print da tela.'));
-
-    // Gestos pinch + drag (igual apps reais)
+    // Gestos
+    let startDist = 0, startScale = 1, startX = 0, startY = 0;
     arScreen.addEventListener('touchstart', e => {
-      if (isLocked) return;
       if (e.touches.length === 2) {
         startDist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
         startScale = currentScale;
@@ -236,23 +231,21 @@
         startY = e.touches[0].pageY - currentY;
       }
     });
-
     arScreen.addEventListener('touchmove', e => {
-      if (isLocked) return;
       e.preventDefault();
       if (e.touches.length === 2) {
         const dist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
-        currentScale = Math.max(0.3, Math.min(4, startScale * (dist / startDist)));
-        scaleSlider.value = currentScale;
-        updateTransform();
+        currentScale = Math.max(0.3, Math.min(3, startScale * (dist / startDist)));
+        scale.value = currentScale;
+        update();
       } else if (e.touches.length === 1) {
         currentX = e.touches[0].pageX - startX;
         currentY = e.touches[0].pageY - startY;
-        updateTransform();
+        update();
       }
     });
 
-    function updateTransform() {
+    function update() {
       arImg.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
     }
   </script>
