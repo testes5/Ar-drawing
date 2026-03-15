@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Ar drawing Free!!</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: #e0f7fa; /* azul bem claro, estilo app AR */
+      font-family: Arial, Helvetica, sans-serif;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    header {
+      width: 100%;
+      background: #ffffff;
+      border-bottom: 2px solid #ccc;
+      padding: 12px;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: fixed;
+      top: 0;
+      z-index: 10;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 420px; /* tamanho típico de tela mobile */
+      height: calc(100vh - 60px);
+      margin-top: 60px;
+      background: #ffffff;
+      border: 12px solid #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .paper-background {
+      position: absolute;
+      inset: 0;
+      background: #ffffff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path d="M0 0h40v40H0z" fill="%23f8f8f8"/><path d="M0 20h40M20 0v40" stroke="%23e0e0e0" stroke-width="1"/></svg>') repeat;
+      z-index: 1;
+    }
+
+    .overlay-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    #imported-image {
+      max-width: 90%;
+      max-height: 70%;
+      object-fit: contain;
+      opacity: 0.75; /* semi-transparente como AR overlay */
+      filter: grayscale(30%) contrast(1.1); /* efeito de "traçado" leve */
+      transition: opacity 0.4s;
+    }
+
+    .import-area {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      margin: auto;
+      padding: 40px 20px;
+      background: rgba(255,255,255,0.85);
+      border: 4px dashed #000;
+      border-radius: 16px;
+      width: 80%;
+      max-width: 320px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .import-area:hover {
+      background: rgba(200,220,255,0.9);
+      transform: scale(1.03);
+    }
+
+    .import-area h2 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      color: #000;
+    }
+
+    .import-area p {
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    #opacity-slider {
+      width: 180px;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Ar drawing Free!!</header>
+
+  <div class="app-container">
+    <div class="paper-background"></div>
+
+    <div class="overlay-layer">
+      <img id="imported-image" src="" alt="Imagem importada para traçar" />
+    </div>
+
+    <label for="imageInput" class="import-area" id="importZone">
+      <h2>Import Image here!</h2>
+      <p>Toque aqui para abrir a galeria e escolher uma foto para traçar no AR</p>
+    </label>
+
+    <input type="file" id="imageInput" accept="image/*">
+
+    <div class="controls" id="controls">
+      Opacidade do traçado: 
+      <input type="range" id="opacity-slider" min="0.1" max="1" step="0.05" value="0.75">
+    </div>
+  </div>
+
+  <script>
+    const imageInput = document.getElementById('imageInput');
+    const importedImage = document.getElementById('imported-image');
+    const importZone = document.getElementById('importZone');
+    const controls = document.getElementById('controls');
+    const opacitySlider = document.getElementById('opacity-slider');
+
+    importZone.addEventListener('click', () => {
+      imageInput.click();
+    });
+
+    imageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          importedImage.src = ev.target.result;
+          importZone.style.display = 'none'; // esconde o botão depois de importar
+          controls.style.display = 'flex';    // mostra controles
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    opacitySlider.addEventListener('input', (e) => {
+      importedImage.style.opacity = e.target.value;
+    });
+  </script>
+
+</body>
+</html>
