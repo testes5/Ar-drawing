@@ -8,113 +8,125 @@
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       height:100vh;
-      background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+      background: linear-gradient(135deg, #a1e3ff, #6ec6ff);
       font-family: system-ui, -apple-system, sans-serif;
       overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
     }
 
+    /* Loading bonito com animação */
     #loading {
-      position:fixed;
-      inset:0;
-      background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:flex-end;
-      padding-bottom:50px;
-      z-index:100;
-      transition:opacity 1.2s ease, transform 1.2s ease;
+      position:fixed; inset:0; background: linear-gradient(135deg, #a1e3ff, #6ec6ff);
+      display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+      padding-bottom:60px; z-index:100; transition: all 1.2s cubic-bezier(0.4,0,0.2,1);
     }
-    #loading.hidden { opacity:0; transform:scale(0.92); pointer-events:none; }
-    .illustration { width:85%; max-width:340px; margin-bottom:25px; border-radius:24px; box-shadow:0 15px 50px rgba(0,0,0,0.22); }
-    .title-loading { font-size:2.5rem; font-weight:700; color:#000; margin-bottom:20px; }
-    .progress-container { width:90%; max-width:380px; height:18px; background:rgba(255,255,255,0.6); border-radius:9px; overflow:hidden; margin-bottom:15px; }
-    .progress-bar { width:0%; height:100%; background:linear-gradient(to right, #2196f3, #64b5f6); border-radius:9px; transition:width 0.5s ease; }
-    .percent { font-size:2.1rem; font-weight:600; color:#333; margin-bottom:40px; }
+    #loading.hidden { opacity:0; transform:scale(0.88); }
+    .illustration { width:88%; max-width:340px; margin-bottom:30px; border-radius:28px; box-shadow:0 20px 60px rgba(0,0,0,0.25); animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .title-loading { font-size:2.6rem; font-weight:700; color:#000; margin-bottom:25px; text-shadow:0 4px 15px rgba(0,0,0,0.1); }
+    .progress-container { width:88%; max-width:360px; height:18px; background:rgba(255,255,255,0.65); border-radius:12px; overflow:hidden; box-shadow:0 8px 25px rgba(0,0,0,0.15); }
+    .progress-bar { width:0%; height:100%; background:linear-gradient(to right,#2196f3,#64b5f6); border-radius:12px; transition:width 0.4s ease; box-shadow:0 0 25px #2196f3; }
+    .percent { font-size:2.2rem; font-weight:700; color:#222; margin-top:18px; }
 
-    #main { height:100vh; width:100%; position:relative; opacity:0; transition:opacity 1s ease; }
+    #main { height:100vh; opacity:0; transition:opacity 1.4s ease; }
     #main.visible { opacity:1; }
 
     header { 
-      width:100%; background:rgba(255,255,255,0.96); backdrop-filter:blur(14px); 
-      padding:16px; text-align:center; font-size:2.2rem; font-weight:700; color:#000; 
-      position:fixed; top:0; z-index:20; box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      width:100%; background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);
+      padding:18px; text-align:center; font-size:2.3rem; font-weight:700; color:#000;
+      position:fixed; top:0; z-index:30; box-shadow:0 6px 20px rgba(0,0,0,0.1);
     }
 
-    #import-screen { 
-      width:100%; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; 
-      background:#fff; position:relative;
-    }
-    .frame { width:96%; max-width:500px; height:80vh; background:#fff; border-radius:32px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.18); position:relative; display:flex; align-items:center; justify-content:center; }
-    .paper { position:absolute; inset:0; background:#fff; background-image: linear-gradient(rgba(0,0,0,0.005) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.005) 1px, transparent 1px); background-size:32px 32px; z-index:1; }
-    .overlay { position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; pointer-events:none; }
-    #imported-img { max-width:96%; max-height:82%; object-fit:contain; opacity:0.72; transition:opacity 0.3s, transform 0.3s; touch-action:manipulation; }
-    .import-zone { position:relative; z-index:10; width:88%; padding:60px 40px; background:#e8f4fd; border:4px dashed #fff; border-radius:32px; text-align:center; cursor:pointer; box-shadow:0 12px 40px rgba(0,0,0,0.14); margin:auto; }
-    .import-zone h1 { font-size:2.3rem; margin-bottom:20px; color:#000; }
-    .import-zone p { font-size:1.25rem; color:#444; }
-    input[type="file"] { display:none; }
-
-    #ar-screen { 
-      display:none; width:100%; height:100vh; position:relative; background:#000; overflow:hidden; touch-action:manipulation;
+    /* Tela AR */
+    #ar-screen {
+      display:none; width:100%; height:100vh; position:relative; background:#000; overflow:hidden;
     }
     #video { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; z-index:1; }
     #ar-overlay { position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; pointer-events:none; }
-    #ar-img { max-width:90%; max-height:90%; object-fit:contain; opacity:0.65; transition:transform 0.2s ease; touch-action:manipulation; }
-    .ar-controls { position:absolute; bottom:20px; left:0; right:0; display:flex; justify-content:space-between; padding:0 20px; z-index:10; pointer-events:auto; }
-    .ar-btn { padding:16px 32px; font-size:1.3rem; font-weight:600; border:none; border-radius:50px; cursor:pointer; color:#fff; box-shadow:0 4px 15px rgba(0,0,0,0.3); }
-    #back-btn { background:#555; }
-    #done-btn { background:#4caf50; }
-    #lock-btn { position:absolute; top:20px; right:20px; padding:12px 24px; background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50px; cursor:pointer; backdrop-filter:blur(5px); font-size:1rem; z-index:10; }
+    #ar-img { 
+      max-width:92%; max-height:92%; object-fit:contain; opacity:0.68; 
+      transition:transform 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+    }
+
+    /* Barra inferior com seta */
+    .bottom-bar {
+      position:absolute; bottom:0; left:0; right:0; height:68px; background:rgba(255,255,255,0.92);
+      backdrop-filter:blur(20px); border-top:1px solid rgba(0,0,0,0.1); z-index:20;
+      display:flex; align-items:center; justify-content:center; cursor:pointer;
+      transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .bottom-bar:hover { background:rgba(255,255,255,0.98); }
+    .arrow { font-size:2.2rem; color:#2196f3; transition:transform 0.4s; }
+    .bottom-bar.expanded .arrow { transform:rotate(180deg); }
+
+    /* Painel que sobe */
+    .options-panel {
+      position:absolute; bottom:68px; left:0; right:0; background:rgba(255,255,255,0.95);
+      backdrop-filter:blur(20px); padding:20px; border-radius:24px 24px 0 0;
+      transform:translateY(100%); transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
+      box-shadow:0 -10px 40px rgba(0,0,0,0.2); z-index:25;
+    }
+    .options-panel.show { transform:translateY(0); }
+
+    .option { margin-bottom:18px; }
+    .option label { display:block; font-size:1.1rem; margin-bottom:8px; color:#333; font-weight:600; }
+    input[type="range"] { width:100%; accent-color:#2196f3; }
+
+    .btn-reset { width:100%; padding:14px; background:#2196f3; color:#fff; border:none; border-radius:16px; font-size:1.1rem; font-weight:600; margin-top:10px; }
+
+    /* Botões fixos */
+    .ar-btn { 
+      position:absolute; padding:14px 28px; font-size:1.25rem; font-weight:600; border:none; border-radius:50px;
+      color:#fff; box-shadow:0 6px 20px rgba(0,0,0,0.3); z-index:30;
+    }
+    #back-btn { left:20px; bottom:80px; background:#555; }
+    #done-btn { right:20px; bottom:80px; background:#4caf50; }
   </style>
 </head>
 <body>
 
-  <!-- Loading inicial -->
+  <!-- Loading com foto da pessoa desenhando -->
   <div id="loading">
-    <img src="https://preview.redd.it/drew-this-on-my-meta-quest-3-drawing-with-passthrough-is-v0-btyrmyj0u3vd1.jpeg?width=1080&format=pjpg&auto=webp&s=c029b829678f0b55522080bd2a95953069a58675" alt="Mão desenhando com AR" class="illustration">
+    <img src="https://picsum.photos/id/1015/800/600" alt="Mão desenhando com AR" class="illustration">
     <div class="title-loading">Ar drawing Free!!</div>
     <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
     <div class="percent" id="percent">0%</div>
   </div>
 
-  <!-- Tela principal -->
   <div id="main">
     <header>Ar drawing Free!!</header>
 
-    <!-- Tela de Import -->
-    <div id="import-screen">
-      <div class="frame">
-        <div class="paper"></div>
-        <div class="overlay">
-          <img id="imported-img" src="" alt="Imagem importada" />
-        </div>
-        <label for="fileInput" class="import-zone" id="importZone">
-          <h1>Import Image here!</h1>
-          <p>Toque para escolher uma foto da galeria</p>
-        </label>
-        <input type="file" id="fileInput" accept="image/*">
-      </div>
-    </div>
-
-    <!-- Tela AR com câmera -->
+    <!-- Tela AR -->
     <div id="ar-screen">
       <video id="video" autoplay playsinline></video>
       <div id="ar-overlay">
         <img id="ar-img" src="" alt="Overlay AR" />
       </div>
-      <div class="ar-controls">
-        <button id="back-btn" class="ar-btn">Voltar</button>
-        <button id="done-btn" class="ar-btn">FINALIZADO</button>
+
+      <!-- Barra com seta -->
+      <div class="bottom-bar" id="bottomBar">
+        <span class="arrow">↓</span>
       </div>
-      <button id="lock-btn">Travar Imagem</button>
+
+      <!-- Painel que sobe -->
+      <div class="options-panel" id="panel">
+        <div class="option">
+          <label>Opacidade</label>
+          <input type="range" id="opacitySlider" min="0.1" max="1" step="0.01" value="0.68">
+        </div>
+        <div class="option">
+          <label>Escala</label>
+          <input type="range" id="scaleSlider" min="0.3" max="4" step="0.01" value="1">
+        </div>
+        <button class="btn-reset" id="resetBtn">Resetar posição e tamanho</button>
+      </div>
+
+      <button id="back-btn" class="ar-btn">Voltar</button>
+      <button id="done-btn" class="ar-btn">FINALIZADO</button>
     </div>
   </div>
 
   <script>
-    // Loading inicial
+    // Loading suave e lenta
     const loading = document.getElementById('loading');
     const bar = document.getElementById('bar');
     const percent = document.getElementById('percent');
@@ -130,25 +142,25 @@
         setTimeout(() => {
           loading.classList.add('hidden');
           setTimeout(() => main.classList.add('visible'), 1200);
-        }, 1000);
+        }, 800);
       }
-    }, 300);
+    }, 280);
 
     // Elementos
-    const fileInput = document.getElementById('fileInput');
-    const importedImg = document.getElementById('imported-img');
-    const arImg = document.getElementById('ar-img');
-    const importZone = document.getElementById('importZone');
-    const importScreen = document.getElementById('import-screen');
     const arScreen = document.getElementById('ar-screen');
     const video = document.getElementById('video');
+    const arImg = document.getElementById('ar-img');
+    const bottomBar = document.getElementById('bottomBar');
+    const panel = document.getElementById('panel');
+    const opacitySlider = document.getElementById('opacitySlider');
+    const scaleSlider = document.getElementById('scaleSlider');
+    const resetBtn = document.getElementById('resetBtn');
     const backBtn = document.getElementById('back-btn');
     const doneBtn = document.getElementById('done-btn');
-    const lockBtn = document.getElementById('lock-btn');
 
     let currentScale = 1;
-    let currentTranslateX = 0;
-    let currentTranslateY = 0;
+    let currentX = 0;
+    let currentY = 0;
     let isLocked = false;
     let stream = null;
     let startDist = 0;
@@ -156,102 +168,93 @@
     let startX = 0;
     let startY = 0;
 
-    // Importar imagem
-    importZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => {
+    // Selecionar foto UMA ÚNICA VEZ e ir direto pra AR
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.onchange = (e) => {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = (ev) => {
-          const src = ev.target.result;
-          importedImg.src = src;
-          arImg.src = src;
-          importZone.style.display = 'none';
+          arImg.src = ev.target.result;
           startAR();
         };
         reader.readAsDataURL(file);
       }
-    });
+    };
 
-    // Iniciar câmera
+    // Abre galeria automaticamente ao carregar o site (uma única vez)
+    setTimeout(() => fileInput.click(), 1800);
+
     async function startAR() {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { facingMode: 'environment' } 
-        });
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
         video.srcObject = stream;
-        importScreen.style.display = 'none';
         arScreen.style.display = 'block';
       } catch (err) {
-        alert('Permissão da câmera negada ou erro: ' + err.message);
+        alert('Permissão da câmera necessária para o modo AR.');
       }
     }
 
-    // Voltar
-    backBtn.addEventListener('click', () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        stream = null;
-      }
-      arScreen.style.display = 'none';
-      importScreen.style.display = 'flex';
-      importZone.style.display = 'block';
-      currentScale = 1; currentTranslateX = 0; currentTranslateY = 0;
+    // Barra com seta → sobe painel
+    bottomBar.addEventListener('click', () => {
+      panel.classList.toggle('show');
+      bottomBar.classList.toggle('expanded');
+    });
+
+    // Sliders
+    opacitySlider.addEventListener('input', (e) => arImg.style.opacity = e.target.value);
+    scaleSlider.addEventListener('input', (e) => {
+      currentScale = parseFloat(e.target.value);
       updateTransform();
     });
 
-    // Finalizado
-    doneBtn.addEventListener('click', () => {
-      alert('Desenho finalizado! Tire um print da tela ou salve.');
+    resetBtn.addEventListener('click', () => {
+      currentScale = 1;
+      currentX = 0;
+      currentY = 0;
+      scaleSlider.value = 1;
+      updateTransform();
     });
 
-    // Lock
-    lockBtn.addEventListener('click', () => {
-      isLocked = !isLocked;
-      lockBtn.textContent = isLocked ? 'Destravar Imagem' : 'Travar Imagem';
-      arImg.style.pointerEvents = isLocked ? 'none' : 'auto';
+    // Voltar e Finalizado
+    backBtn.addEventListener('click', () => {
+      if (stream) stream.getTracks().forEach(t => t.stop());
+      location.reload(); // volta tudo limpo
     });
+    doneBtn.addEventListener('click', () => alert('✅ Desenho finalizado! Tire print da tela.'));
 
-    // Gestos: Pinch para zoom + drag com um dedo
-    arScreen.addEventListener('touchstart', (e) => {
+    // Gestos pinch + drag (igual apps reais)
+    arScreen.addEventListener('touchstart', e => {
       if (isLocked) return;
       if (e.touches.length === 2) {
-        // Pinch start
-        const touch1 = e.touches[0];
-        const touch2 = e.touches[1];
-        startDist = Math.hypot(touch1.pageX - touch2.pageX, touch1.pageY - touch2.pageY);
+        startDist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
         startScale = currentScale;
       } else if (e.touches.length === 1) {
-        // Drag start
-        startX = e.touches[0].pageX - currentTranslateX;
-        startY = e.touches[0].pageY - currentTranslateY;
+        startX = e.touches[0].pageX - currentX;
+        startY = e.touches[0].pageY - currentY;
       }
     });
 
-    arScreen.addEventListener('touchmove', (e) => {
+    arScreen.addEventListener('touchmove', e => {
       if (isLocked) return;
       e.preventDefault();
-
       if (e.touches.length === 2) {
-        // Pinch zoom
-        const touch1 = e.touches[0];
-        const touch2 = e.touches[1];
-        const currentDist = Math.hypot(touch1.pageX - touch2.pageX, touch1.pageY - touch2.pageY);
-        currentScale = startScale * (currentDist / startDist);
-        currentScale = Math.max(0.3, Math.min(5, currentScale)); // limite zoom
+        const dist = Math.hypot(e.touches[0].pageX - e.touches[1].pageX, e.touches[0].pageY - e.touches[1].pageY);
+        currentScale = Math.max(0.3, Math.min(4, startScale * (dist / startDist)));
+        scaleSlider.value = currentScale;
         updateTransform();
       } else if (e.touches.length === 1) {
-        // Drag
-        currentTranslateX = e.touches[0].pageX - startX;
-        currentTranslateY = e.touches[0].pageY - startY;
+        currentX = e.touches[0].pageX - startX;
+        currentY = e.touches[0].pageY - startY;
         updateTransform();
       }
     });
 
     function updateTransform() {
-      arImg.style.transform = `translate(${currentTranslateX}px, ${currentTranslateY}px) scale(${currentScale})`;
+      arImg.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
     }
   </script>
-
 </body>
 </html>
