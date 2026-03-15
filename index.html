@@ -21,59 +21,59 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:flex-end; /* empurra tudo para baixo */
-      padding-bottom: 80px; /* espaço no fundo */
+      justify-content:flex-end;
+      padding-bottom: 60px;
       z-index:100;
-      transition: opacity 1s ease, transform 1s ease;
+      transition: opacity 1.2s ease, transform 1.2s ease;
     }
 
     #loading.hidden {
       opacity:0;
-      transform:scale(0.92);
+      transform:scale(0.9);
       pointer-events:none;
     }
 
     .illustration {
-      width: 280px;
-      max-width: 80%;
-      margin-bottom: 40px;
-      border-radius: 24px;
-      box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 320px;
+      margin-bottom: 30px;
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
     }
 
     .title-loading {
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       font-weight:700;
       color:#000;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       text-align: center;
     }
 
     .progress-container {
-      width:85%;
-      max-width:340px;
-      height:16px;
-      background:rgba(255,255,255,0.5);
-      border-radius:8px;
+      width:88%;
+      max-width:360px;
+      height:18px;
+      background:rgba(255,255,255,0.55);
+      border-radius:9px;
       overflow:hidden;
-      box-shadow:0 6px 20px rgba(0,0,0,0.12);
-      margin-bottom: 20px;
+      box-shadow:0 8px 25px rgba(0,0,0,0.15);
+      margin-bottom: 18px;
     }
 
     .progress-bar {
       width:0%;
       height:100%;
       background:linear-gradient(to right, #2196f3, #64b5f6);
-      border-radius:8px;
-      transition:width 0.4s ease;
-      box-shadow:0 0 20px #2196f3aa;
+      border-radius:9px;
+      transition:width 0.5s ease;
+      box-shadow:0 0 25px #2196f3cc;
     }
 
     .percent {
-      font-size:1.9rem;
+      font-size:2rem;
       font-weight:600;
       color:#333;
-      margin-bottom: 40px;
+      margin-bottom: 50px;
     }
 
     /* Main Content */
@@ -84,7 +84,7 @@
       align-items:center;
       justify-content:center;
       opacity:0;
-      transition:opacity 1.2s ease 0.6s;
+      transition:opacity 1.4s ease 0.8s;
     }
 
     #main.visible {
@@ -93,28 +93,28 @@
 
     header {
       width:100%;
-      background:rgba(255,255,255,0.95);
-      backdrop-filter:blur(12px);
-      padding:16px;
+      background:rgba(255,255,255,0.96);
+      backdrop-filter:blur(14px);
+      padding:18px;
       text-align:center;
-      font-size:2rem;
+      font-size:2.1rem;
       font-weight:700;
       color:#000;
       position:fixed;
       top:0;
       z-index:20;
-      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      box-shadow:0 5px 15px rgba(0,0,0,0.1);
     }
 
     .frame {
-      width:100%;
-      max-width:380px;
-      height:calc(100vh - 70px);
-      margin-top:70px;
+      width:94%;
+      max-width:420px; /* aumentado pra não ficar pequeno/lado vazio */
+      height:calc(100vh - 80px);
+      margin-top:80px;
       background:#fff;
-      border-radius:32px;
+      border-radius:36px;
       overflow:hidden;
-      box-shadow:0 25px 70px rgba(0,0,0,0.18);
+      box-shadow:0 30px 80px rgba(0,0,0,0.2);
       position:relative;
     }
 
@@ -123,9 +123,9 @@
       inset:0;
       background:#fff;
       background-image: 
-        linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,0,0,0.015) 1px, transparent 1px);
-      background-size:24px 24px;
+        linear-gradient(rgba(0,0,0,0.008) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.008) 1px, transparent 1px);
+      background-size:28px 28px; /* grid mais espaçado e sutil */
       z-index:1;
     }
 
@@ -140,8 +140,8 @@
     }
 
     #img {
-      max-width:94%;
-      max-height:78%;
+      max-width:95%;
+      max-height:80%;
       object-fit:contain;
       opacity:0.72;
       transition:opacity 0.5s ease;
@@ -150,32 +150,32 @@
     .import-zone {
       position:relative;
       z-index:10;
-      width:82%;
-      padding:50px 30px;
+      width:85%;
+      padding:55px 35px;
       background:#e8f4fd;
       border:4px dashed #fff;
-      border-radius:28px;
+      border-radius:32px;
       text-align:center;
       cursor:pointer;
-      transition:all 0.35s ease;
-      box-shadow:0 10px 35px rgba(0,0,0,0.12);
+      transition:all 0.4s ease;
+      box-shadow:0 12px 40px rgba(0,0,0,0.14);
       margin:auto;
     }
 
     .import-zone:hover {
       background:#d1e8ff;
-      transform:translateY(-6px);
-      box-shadow:0 16px 50px rgba(0,0,0,0.18);
+      transform:translateY(-8px);
+      box-shadow:0 20px 60px rgba(0,0,0,0.22);
     }
 
     .import-zone h1 {
-      font-size:2rem;
-      margin-bottom:16px;
+      font-size:2.2rem;
+      margin-bottom:18px;
       color:#000;
     }
 
     .import-zone p {
-      font-size:1.15rem;
+      font-size:1.2rem;
       color:#444;
       line-height:1.5;
     }
@@ -184,28 +184,28 @@
 
     .controls {
       position:absolute;
-      bottom:32px;
+      bottom:40px;
       left:50%;
       transform:translateX(-50%);
-      background:rgba(0,0,0,0.6);
+      background:rgba(0,0,0,0.65);
       color:#fff;
-      padding:12px 24px;
+      padding:14px 28px;
       border-radius:999px;
-      font-size:1rem;
+      font-size:1.05rem;
       display:none;
       align-items:center;
-      gap:16px;
-      backdrop-filter:blur(8px);
+      gap:18px;
+      backdrop-filter:blur(10px);
     }
 
-    #opacidade { width:180px; accent-color:#fff; }
+    #opacidade { width:200px; accent-color:#fff; }
   </style>
 </head>
 <body>
 
-  <!-- Loading Screen -->
+  <!-- Loading Screen com imagem corrigida -->
   <div id="loading">
-    <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7a/a7/4a/7aa74a36-bde2-8141-a4a4-9a37799bd897/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/1200x630wa.png" alt="Pessoa desenhando com AR" class="illustration">
+    <img src="https://arteasy.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhero.688a90f37e977e2900145202.webp&w=1920&q=75" alt="Mão desenhando com AR no papel usando celular" class="illustration">
     <div class="title-loading">Ar drawing Free!!</div>
     <div class="progress-container">
       <div class="progress-bar" id="bar"></div>
@@ -238,7 +238,7 @@
   </div>
 
   <script>
-    // Loading lento e suave
+    // Loading lento
     const loading = document.getElementById('loading');
     const bar = document.getElementById('bar');
     const percent = document.getElementById('percent');
@@ -246,7 +246,7 @@
 
     let progress = 0;
     const interval = setInterval(() => {
-      progress += Math.random() * 6 + 4; // aumento mais lento e variado
+      progress += Math.random() * 5 + 3; // ainda mais lento
       if (progress > 100) progress = 100;
       bar.style.width = progress + '%';
       percent.textContent = Math.round(progress) + '%';
@@ -257,10 +257,10 @@
           loading.classList.add('hidden');
           setTimeout(() => {
             main.classList.add('visible');
-          }, 1000);
-        }, 800);
+          }, 1200);
+        }, 1000);
       }
-    }, 250); // ~6-8 segundos total
+    }, 300); // ~7-10 segundos agora
 
     // Importar imagem
     const fileInput = document.getElementById('file');
