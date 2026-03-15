@@ -21,52 +21,62 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:center;
+      justify-content:flex-end; /* empurra tudo para baixo */
+      padding-bottom: 80px; /* espaço no fundo */
       z-index:100;
-      transition: opacity 0.8s ease, transform 0.8s ease;
+      transition: opacity 1s ease, transform 1s ease;
     }
 
     #loading.hidden {
       opacity:0;
-      transform:scale(0.95);
+      transform:scale(0.92);
       pointer-events:none;
     }
 
+    .illustration {
+      width: 280px;
+      max-width: 80%;
+      margin-bottom: 40px;
+      border-radius: 24px;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    }
+
     .title-loading {
-      font-size:2.5rem;
+      font-size: 2.2rem;
       font-weight:700;
       color:#000;
-      margin-bottom:40px;
-      text-shadow:0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      text-align: center;
     }
 
     .progress-container {
-      width:80%;
-      max-width:320px;
-      height:12px;
-      background:rgba(255,255,255,0.4);
-      border-radius:6px;
+      width:85%;
+      max-width:340px;
+      height:16px;
+      background:rgba(255,255,255,0.5);
+      border-radius:8px;
       overflow:hidden;
-      box-shadow:0 4px 15px rgba(0,0,0,0.1);
+      box-shadow:0 6px 20px rgba(0,0,0,0.12);
+      margin-bottom: 20px;
     }
 
     .progress-bar {
       width:0%;
       height:100%;
       background:linear-gradient(to right, #2196f3, #64b5f6);
-      border-radius:6px;
-      transition:width 0.3s ease;
-      box-shadow:0 0 15px #2196f3aa;
+      border-radius:8px;
+      transition:width 0.4s ease;
+      box-shadow:0 0 20px #2196f3aa;
     }
 
     .percent {
-      margin-top:20px;
-      font-size:1.8rem;
+      font-size:1.9rem;
       font-weight:600;
       color:#333;
+      margin-bottom: 40px;
     }
 
-    /* Main Content (escondido no início) */
+    /* Main Content */
     #main {
       height:100vh;
       display:flex;
@@ -74,7 +84,7 @@
       align-items:center;
       justify-content:center;
       opacity:0;
-      transition:opacity 1s ease 0.4s;
+      transition:opacity 1.2s ease 0.6s;
     }
 
     #main.visible {
@@ -106,8 +116,6 @@
       overflow:hidden;
       box-shadow:0 25px 70px rgba(0,0,0,0.18);
       position:relative;
-      display:flex;
-      flex-direction:column;
     }
 
     .paper {
@@ -197,6 +205,7 @@
 
   <!-- Loading Screen -->
   <div id="loading">
+    <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7a/a7/4a/7aa74a36-bde2-8141-a4a4-9a37799bd897/AppIcon-0-0-1x_U007ephone-0-1-85-220.png/1200x630wa.png" alt="Pessoa desenhando com AR" class="illustration">
     <div class="title-loading">Ar drawing Free!!</div>
     <div class="progress-container">
       <div class="progress-bar" id="bar"></div>
@@ -229,7 +238,7 @@
   </div>
 
   <script>
-    // Simula carregamento inicial
+    // Loading lento e suave
     const loading = document.getElementById('loading');
     const bar = document.getElementById('bar');
     const percent = document.getElementById('percent');
@@ -237,7 +246,7 @@
 
     let progress = 0;
     const interval = setInterval(() => {
-      progress += Math.random() * 12 + 8; // aumenta de forma variada, mas chega a 100
+      progress += Math.random() * 6 + 4; // aumento mais lento e variado
       if (progress > 100) progress = 100;
       bar.style.width = progress + '%';
       percent.textContent = Math.round(progress) + '%';
@@ -248,12 +257,12 @@
           loading.classList.add('hidden');
           setTimeout(() => {
             main.classList.add('visible');
-          }, 800); // tempo da animação fade + scale
-        }, 600); // pausa no 100% pra ver
+          }, 1000);
+        }, 800);
       }
-    }, 180); // ~4-5 segundos total
+    }, 250); // ~6-8 segundos total
 
-    // Parte de importar imagem (igual antes)
+    // Importar imagem
     const fileInput = document.getElementById('file');
     const imgEl = document.getElementById('img');
     const zone = document.getElementById('zone');
